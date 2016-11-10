@@ -11,7 +11,8 @@ import java.io.IOException;
 
 public class Split {
 
-	public static final String prePath = "e:/xyGPS/";
+	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+	public static final String prePath = rootDirectory + "xyGPS\\";
 	// static String[] dataForOneFile; // 一个节点的一个.plt文件中的数据
 	// static String[] dataRestForOneFile;
 	
@@ -39,22 +40,22 @@ public class Split {
 			fileName = FileRead.readfile(path); // 获取所有文件的名字存入字符串数组
 
 			for (int i = 0; i < fileName.length; i++) {// 检查每个文件内数据有没有跨天的
-				totalDataLines = FileRead.getTotalLines(path + "/"
+				totalDataLines = FileRead.getTotalLines(path + "\\"
 						+ fileName[i]);// 获取一个数据文件的总行数
 				String[] dataForOneFile = new String[totalDataLines];
 				for (int j = 0; j < dataForOneFile.length - 1; j++) {
-					dataForOneFile[j] = FileRead.readLineVarFile(path + "/"
+					dataForOneFile[j] = FileRead.readLineVarFile(path + "\\"
 							+ fileName[i], lineNumber + j);// 读取某一数据文件指定行
-					dataForOneFile[j + 1] = FileRead.readLineVarFile(path + "/"
+					dataForOneFile[j + 1] = FileRead.readLineVarFile(path + "\\"
 							+ fileName[i], lineNumber + j + 1);
 					if (dataForOneFile[j].charAt(9) != dataForOneFile[j + 1]
 							.charAt(9)) {
 						System.out.println("节点"+m+"第"+j+"行跨天了");
 						StartSplit(j + 2, fileName[i], dataForOneFile[j + 1],
 								path, latPathStr);
-						File deleteF = new File(path + "/" + fileName[i]);
+						File deleteF = new File(path + "\\" + fileName[i]);
 						deleteF.delete();
-						String filePath = "e:\\xyGPS\\" + latPathStr + "\\"
+						String filePath = rootDirectory + "xyGPS\\" + latPathStr + "\\"
 								+ fileName[i];
 						for (int k = 0; k < j + 1; k++) {
 							File writeFile = new File(filePath);
@@ -93,10 +94,10 @@ public class Split {
 		// TODO Auto-generated method stub
 		File file = new File(path);
 		String[] filelist = file.list();
-		int totalDataLines = FileRead.getTotalLines(path + "/" + fileName);// 获取一个数据文件的总行数
+		int totalDataLines = FileRead.getTotalLines(path + "\\" + fileName);// 获取一个数据文件的总行数
 		String[] dataRestForOneFile = new String[totalDataLines - line];
 		for (int j = 0; j < dataRestForOneFile.length; j++) {
-			dataRestForOneFile[j] = FileRead.readLineVarFile(path + "/"
+			dataRestForOneFile[j] = FileRead.readLineVarFile(path + "\\"
 					+ fileName, line + j);// 读取某一数据文件指定行
 			// 把文件名改为每个文件数据第一行的北京时间
 
@@ -113,7 +114,7 @@ public class Split {
 			}
 			nName += ".plt";
 
-			String filePath = "e:\\xyGPS\\" + latPathStr + "\\" + nName;
+			String filePath = rootDirectory + "xyGPS\\" + latPathStr + "\\" + nName;
 			File writeFile = new File(filePath);
 			BufferedWriter out = new BufferedWriter(new FileWriter(writeFile,
 					true));

@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import sort.FileRead;
 import sort.Merge;
 import sort.Split;
 import statistic.Caculate;
@@ -16,7 +17,8 @@ import statistic.Statistic;
 
 public class GPS {
 
-	public static final String prePath = "e:/GPS/";// 此处为读取原始GPS数据文件的地方
+	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+	public static final String prePath = rootDirectory + "GPS\\";// 此处为读取原始GPS数据文件的地方
 													// 000为第一个节点，001为第二个节点...
 
 	static double sm_a = 6378137.0;
@@ -24,8 +26,8 @@ public class GPS {
 	double sm_EccSquared = 6.69437999013e-03;
 	static double UTMScaleFactor = 0.9996;
 
-	static int nodeNum = 5;// 总节点个数
-	static int dAYS = 20;// 统计的天数
+	static int nodeNum = 182;// 总节点个数
+	static int dAYS = 30;// 统计的天数
 
 	public static void main(String[] args) throws IOException, ParseException {
 
@@ -63,7 +65,7 @@ public class GPS {
 			else
 				latPathStr = Integer.toString(latPath);
 
-			String path = prePath + latPathStr;// 每次循环的最终路径
+			String path = prePath + latPathStr + "\\Trajectory\\";// 每次循环的最终路径
 
 			File file = new File(path); // 文件初始化
 			String[] filelist = file.list();
@@ -81,7 +83,7 @@ public class GPS {
 			/* 对每个文件进行经纬度转坐标操作 */
 			for (int c = 0; c < fileName.length; c++) {
 				try {
-					totalDataLines = FileRead.getTotalLines(path + "/"
+					totalDataLines = FileRead.getTotalLines(path + "\\"
 							+ fileName[c]) - 7;// 获取一个数据文件的总行数
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -106,7 +108,7 @@ public class GPS {
 				try {
 					String[] dataForOneFile = new String[totalDataLines + 1];
 					for (int i = 0; i < dataForOneFile.length; i++) {
-						dataForOneFile[i] = FileRead.readLineVarFile(path + "/"
+						dataForOneFile[i] = FileRead.readLineVarFile(path + "\\"
 								+ fileName[c], lineNumber);// 读取某一数据文件指定行
 						int n, j;
 						int count = 0;
@@ -228,12 +230,12 @@ public class GPS {
 
 			LatLonToUTMXY(inputWGS84.lat, inputWGS84.lon, zone, outputUTM);
 			try {
-				String folderPath = "e:\\xyGPS\\" + latPath;
+				String folderPath = rootDirectory + "xyGPS\\" + latPath;
 				File folderFile = new File(folderPath);
 				if (!folderFile.exists() && !folderFile.isDirectory()) {
 					folderFile.mkdir();
 				}
-				String filePath = "e:\\xyGPS\\" + latPath + "\\" + fileName;
+				String filePath = rootDirectory + "xyGPS\\" + latPath + "\\" + fileName;
 				File writeFile = new File(filePath);
 				BufferedWriter out = new BufferedWriter(new FileWriter(
 						writeFile, true));

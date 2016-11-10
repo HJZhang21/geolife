@@ -1,5 +1,4 @@
 package sort;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +15,8 @@ import java.io.OutputStreamWriter;
 import java.io.SequenceInputStream;
 
 public class Merge {
-	public static final String prePath = "e:/xyGPS/";
+	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+	public static final String prePath = rootDirectory + "xyGPS\\";
 
 	public static void mergeFile(int nodeNum) throws IOException {
 
@@ -42,9 +42,9 @@ public class Merge {
 			for (int i = 0; i < fileName.length - 1; i++) {// 对每个文件进行检查，如果有同一天的数据文件，合并
 				if (fileName[i].substring(0, 8).equals(
 						fileName[i + 1].substring(0, 8))) {
-					FileReader file1 = new FileReader(path + "/"
+					FileReader file1 = new FileReader(path + "\\"
 							+ fileName[i + 1]);
-					FileWriter file2 = new FileWriter(path + "/" + fileName[i],
+					FileWriter file2 = new FileWriter(path + "\\" + fileName[i],
 							true);
 					BufferedReader br1 = new BufferedReader(file1);
 					BufferedWriter bw1 = new BufferedWriter(file2);
@@ -59,7 +59,7 @@ public class Merge {
 					}
 					bw1.close();
 					br1.close();
-					File deleteF = new File(path + "/" + fileName[i + 1]);
+					File deleteF = new File(path + "\\" + fileName[i + 1]);
 					deleteF.delete();
 				}
 			}

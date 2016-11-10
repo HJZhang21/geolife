@@ -12,7 +12,9 @@ import java.util.Scanner;
 
 public class Statistic {
 
-	static String prePath = "e:/xyGPS/";
+//	static String rootDirectory = "E:\\";
+	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+	static String prePath = rootDirectory + "xyGPS\\";
 	static boolean[][] onLinePerson = new boolean[182][365];// 此处默认设为一年,182个节点
 
 
@@ -88,7 +90,7 @@ public class Statistic {
 	private static void writeFileMatrix(boolean[][] onLinePerson, int dAYS,
 			int nodeNum) throws IOException {
 		// TODO Auto-generated method stub
-		String filePath = "e:\\onLineMatrix\\data.txt";
+		String filePath = rootDirectory + "onLineMatrix\\data.txt";
 		File writeFile = new File(filePath);
 		BufferedWriter out = new BufferedWriter(new FileWriter(writeFile, true));
 		for (int i = 0; i < nodeNum; i++) {

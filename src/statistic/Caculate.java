@@ -28,6 +28,9 @@ public class Caculate {
 	static int[] all = new int[allNodes];
 	static int[] given;
 	static String pickedNodes = "";
+//	static String rootDirectory = "E:\\";
+	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+
 	public Caculate(int allNodes,int dAYS){
 		this.allNodes=allNodes;
 		this.dAYS=dAYS;
@@ -159,7 +162,7 @@ public class Caculate {
 				nodeName = Integer.toString(latName);
 
 			// 创建选出的节点的文件夹用来存储数据
-			File file = new File("E:\\pick2\\" + nodeName);
+			File file = new File(rootDirectory + "pick2\\" + nodeName);
 			// 如果文件夹不存在则创建
 			if (!file.exists() && !file.isDirectory()) {
 				file.mkdirs();// 创建多级目录
@@ -167,7 +170,7 @@ public class Caculate {
 				System.out.println("//目录存在");
 			}
 
-			File file2 = new File("E:\\xyGPS\\" + nodeName); // 文件初始化
+			File file2 = new File(rootDirectory + "xyGPS\\" + nodeName); // 文件初始化
 			String[] filelist = file2.list();
 			String[] fileName = new String[filelist.length + 1]; // 文件名初始化
 
@@ -178,12 +181,12 @@ public class Caculate {
 				}
 			}
 
-			fileName = FileRead.readfile("E:\\xyGPS\\" + nodeName); // 获取所有文件的名字存入字符串数组
-			String targetDirectory = "E:\\pick2\\" + nodeName + "\\";
+			fileName = FileRead.readfile(rootDirectory + "xyGPS\\" + nodeName); // 获取所有文件的名字存入字符串数组
+			String targetDirectory = rootDirectory + "pick2\\" + nodeName + "\\";
 			System.out.println(targetDirectory);
 			for (int i = 0; i < fileName.length; i++) {
 				if (mNStartDate.equals(fileName[i].substring(0, 8))) {
-					File[] fileArray = (new File("E:\\xyGPS\\" + nodeName))
+					File[] fileArray = (new File(rootDirectory + "xyGPS\\" + nodeName))
 							.listFiles();
 					for (int index = i; index < i + givenDays; index++) {
 						if (fileArray[index].isFile()) {
@@ -347,7 +350,7 @@ public class Caculate {
 				nodeName = Integer.toString(latName);
 
 			// 创建选出的节点的文件夹用来存储数据
-			File file = new File("E:\\pick\\" + nodeName);
+			File file = new File(rootDirectory + "pick\\" + nodeName);
 			// 如果文件夹不存在则创建
 			if (!file.exists() && !file.isDirectory()) {
 				file.mkdirs();// 创建多级目录
@@ -355,7 +358,7 @@ public class Caculate {
 				System.out.println("//目录存在");
 			}
 
-			File file2 = new File("E:\\xyGPS\\" + nodeName); // 文件初始化
+			File file2 = new File(rootDirectory + "xyGPS\\" + nodeName); // 文件初始化
 			String[] filelist = file2.list();
 			String[] fileName = new String[filelist.length + 1]; // 文件名初始化
 
@@ -366,12 +369,12 @@ public class Caculate {
 				}
 			}
 
-			fileName = FileRead.readfile("E:\\xyGPS\\" + nodeName); // 获取所有文件的名字存入字符串数组
-			String targetDirectory = "E:\\pick\\" + nodeName + "\\";
+			fileName = FileRead.readfile(rootDirectory + "xyGPS\\" + nodeName); // 获取所有文件的名字存入字符串数组
+			String targetDirectory = rootDirectory + "pick\\" + nodeName + "\\";
 			System.out.println(targetDirectory);
 			for (int i = 0; i < fileName.length; i++) {
 				if (lDStartDate.equals(fileName[i].substring(0, 8))) {
-					File[] fileArray = (new File("E:\\xyGPS\\" + nodeName))
+					File[] fileArray = (new File(rootDirectory + "xyGPS\\" + nodeName))
 							.listFiles();
 					for (int index = i; index < i + max; index++) {
 						if (fileArray[index].isFile()) {
@@ -519,15 +522,15 @@ public class Caculate {
 	 */
 	private static int[][] readFileMatrix(int dAYS) throws IOException {
 		// TODO Auto-generated method stub
-		File file = new File("e:\\onLineMatrix\\data.txt"); // 文件初始化
+		File file = new File(rootDirectory + "onLineMatrix\\data.txt"); // 文件初始化
 		int totalDataLines = FileRead
-				.getTotalLines("e:\\onLineMatrix\\data.txt");
+				.getTotalLines(rootDirectory + "onLineMatrix\\data.txt");
 		int[][] onLineDays = new int[totalDataLines][dAYS];
 		int count = 0;
 		String line = "";
 		for (int i = 1; i <= totalDataLines; i++) {
 			count = 0;
-			line = FileRead.readLineVarFile("e:\\onLineMatrix\\data.txt", i);
+			line = FileRead.readLineVarFile(rootDirectory + "onLineMatrix\\data.txt", i);
 			for (int j = 0; j < line.length(); j++) {
 				if (line.charAt(j) != ' ') {
 					onLineDays[i - 1][count] = Integer.parseInt(line.charAt(j)
