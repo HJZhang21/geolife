@@ -14,16 +14,22 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.SequenceInputStream;
 
+import util.Configuration;
+import util.FileRead;
+
 public class Merge {
-	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
-	public static final String prePath = rootDirectory + "xyGPS\\";
+//	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+//	public static final String prePath = rootDirectory + "xyGPS\\";
 
 	public static void mergeFile(int nodeNum) throws IOException {
 
 		String latPathStr = "";
 		int latPath;
+
+		System.out.println("[同天轨迹合并]");
+		
 		for (int m = 0; m < nodeNum; m++) {// 循环检查每个节点内的数据文件
-			System.out.println(m + "文件夹");
+			System.out.println("节点" + m + "：");
 			latPath = m;
 			if (latPath / 10 == 0)
 				latPathStr = "00" + Integer.toString(latPath);
@@ -32,7 +38,7 @@ public class Merge {
 			else
 				latPathStr = Integer.toString(latPath);
 
-			String path = prePath + latPathStr;
+			String path = Configuration.getConfiguration().getXYDirectory() + latPathStr;
 
 			File file = new File(path);
 			String[] filelist = file.list();
@@ -63,7 +69,7 @@ public class Merge {
 					deleteF.delete();
 				}
 			}
-			System.out.println("节点" + m + "合并完毕");
+			System.out.println("节点" + m + "合并完毕。");
 
 		}
 	}

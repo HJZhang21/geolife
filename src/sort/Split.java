@@ -1,7 +1,5 @@
 package sort;
 
-import gps.FileRead;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,10 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import util.Configuration;
+import util.FileRead;
+
 public class Split {
 
-	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
-	public static final String prePath = rootDirectory + "xyGPS\\";
+//	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+//	public static final String prePath = rootDirectory + "xyGPS\\";
 	// static String[] dataForOneFile; // 一个节点的一个.plt文件中的数据
 	// static String[] dataRestForOneFile;
 	
@@ -21,8 +22,11 @@ public class Split {
 	public static void splitFile(int nodeNum) throws IOException {
 		String latPathStr = "";
 		int latPath;
+
+		System.out.println("[跨天轨迹分割]");
+		
 		for (int m = 0; m < nodeNum; m++) {// 循环检查各个节点内数据
-			System.out.println(m + "文件夹");
+			System.out.println("节点" + m + "：");
 			int lineNumber = 1;
 			int totalDataLines = 0; // 一个数据文件的总行数
 			latPath = m;
@@ -33,7 +37,7 @@ public class Split {
 			else
 				latPathStr = Integer.toString(latPath);
 
-			String path = prePath + latPathStr;
+			String path = Configuration.getConfiguration().getXYDirectory() + latPathStr;
 			File file = new File(path);
 			String[] filelist = file.list();
 			String[] fileName = new String[filelist.length + 1]; // 文件名初始化
@@ -50,12 +54,12 @@ public class Split {
 							+ fileName[i], lineNumber + j + 1);
 					if (dataForOneFile[j].charAt(9) != dataForOneFile[j + 1]
 							.charAt(9)) {
-						System.out.println("节点"+m+"第"+j+"行跨天了");
+						System.out.print("...第" + j + "行");
 						StartSplit(j + 2, fileName[i], dataForOneFile[j + 1],
 								path, latPathStr);
 						File deleteF = new File(path + "\\" + fileName[i]);
 						deleteF.delete();
-						String filePath = rootDirectory + "xyGPS\\" + latPathStr + "\\"
+						String filePath = Configuration.getConfiguration().getXYDirectory() + latPathStr + "\\"
 								+ fileName[i];
 						for (int k = 0; k < j + 1; k++) {
 							File writeFile = new File(filePath);
@@ -72,7 +76,7 @@ public class Split {
 				}
 
 			}
-			System.out.println("节点" + m + "执行完毕");
+			System.out.println("节点" + m + "分割完毕。");
 
 		}
 
@@ -114,7 +118,7 @@ public class Split {
 			}
 			nName += ".plt";
 
-			String filePath = rootDirectory + "xyGPS\\" + latPathStr + "\\" + nName;
+			String filePath = Configuration.getConfiguration().getXYDirectory() + latPathStr + "\\" + nName;
 			File writeFile = new File(filePath);
 			BufferedWriter out = new BufferedWriter(new FileWriter(writeFile,
 					true));

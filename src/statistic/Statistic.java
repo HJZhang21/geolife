@@ -10,11 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import util.Configuration;
+import util.FileRead;
+
 public class Statistic {
 
 //	static String rootDirectory = "E:\\";
-	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
-	static String prePath = rootDirectory + "xyGPS\\";
+//	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+//	static String prePath = rootDirectory + "xyGPS\\";
 	static boolean[][] onLinePerson = new boolean[182][365];// 此处默认设为一年,182个节点
 
 
@@ -42,7 +45,7 @@ public class Statistic {
 			else
 				latPathStr = Integer.toString(latPath);
 
-			String path = prePath + latPathStr;
+			String path = Configuration.getConfiguration().getXYDirectory() + latPathStr;
 
 			File file = new File(path); // 文件初始化
 			String[] filelist = file.list();
@@ -90,7 +93,7 @@ public class Statistic {
 	private static void writeFileMatrix(boolean[][] onLinePerson, int dAYS,
 			int nodeNum) throws IOException {
 		// TODO Auto-generated method stub
-		String filePath = rootDirectory + "onLineMatrix\\data.txt";
+		String filePath = Configuration.getConfiguration().getMatrixDirectory() + "data.txt";
 		File writeFile = new File(filePath);
 		BufferedWriter out = new BufferedWriter(new FileWriter(writeFile, true));
 		for (int i = 0; i < nodeNum; i++) {

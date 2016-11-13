@@ -9,38 +9,41 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import sort.FileRead;
+import util.FileRead;
 import sort.Merge;
 import sort.Split;
 import statistic.Caculate;
 import statistic.Statistic;
+import util.Configuration;
 
 public class GPS {
 
-	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
-	public static final String prePath = rootDirectory + "GPS\\";// 此处为读取原始GPS数据文件的地方
-													// 000为第一个节点，001为第二个节点...
+//	static String rootDirectory = "E:\\SUN\\WORKSPACE\\DATASET\\Geolife\\";
+//	public static final String prePath = rootDirectory + "GPS\\";// 此处为读取原始GPS数据文件的地方
+//													// 000为第一个节点，001为第二个节点...
 
 	static double sm_a = 6378137.0;
 	static double sm_b = 6356752.314;
 	double sm_EccSquared = 6.69437999013e-03;
 	static double UTMScaleFactor = 0.9996;
 
-	static int nodeNum = 182;// 总节点个数
-	static int dAYS = 30;// 统计的天数
-
+//	static int nodeNum = 182;// 总节点个数
+//	static int dAYS = 30;// 统计的天数
+	
 	public static void main(String[] args) throws IOException, ParseException {
 
 		Transition();//坐标时间海拔转换
 
-		Split.splitFile(nodeNum);//跨天文件分割
+		Split.splitFile( Configuration.getConfiguration().getCountNode() );//跨天文件分割
 		
 		for (int i = 0; i < 5; i++) {
-			Merge.mergeFile(nodeNum);//同天文件合并
+			Merge.mergeFile( Configuration.getConfiguration().getCountNode() );//同天文件合并
 		}
-		Statistic.statisticFile(nodeNum, dAYS);//统计在线与否存入二维数组和文件
+		Statistic.statisticFile( Configuration.getConfiguration().getCountNode() 
+				,  Configuration.getConfiguration().getCountDay() );//统计在线与否存入二维数组和文件
 		
-		Caculate caculate = new Caculate(nodeNum, dAYS);//读取文件实现指定功能
+		Caculate caculate = new Caculate( Configuration.getConfiguration().getCountNode() 
+				,  Configuration.getConfiguration().getCountDay() );//读取文件实现指定功能
 		caculate.caculateData();
 	}
 
@@ -55,8 +58,11 @@ public class GPS {
 
 		String latPathStr = "";
 		int latPath;
-		for (int m = 0; m < nodeNum; m++) {// 利用for循环选出GPS目录下各个子目录：000、001、002...
-			System.out.println(m + "文件夹");
+		
+		System.out.println("[经纬度-横纵坐标转换]");
+		
+		for (int m = 0; m < Configuration.getConfiguration().getCountNode(); m++) {// 利用for循环选出GPS目录下各个子目录：000、001、002...
+			System.out.println("节点" + m + "：");
 			latPath = m;
 			if (latPath / 10 == 0)
 				latPathStr = "00" + Integer.toString(latPath);
@@ -65,7 +71,7 @@ public class GPS {
 			else
 				latPathStr = Integer.toString(latPath);
 
-			String path = prePath + latPathStr + "\\Trajectory\\";// 每次循环的最终路径
+			String path = Configuration.getConfiguration().getInputDirectory() + latPathStr + Configuration.getConfiguration().getTracePath();// 每次循环的最终路径
 
 			File file = new File(path); // 文件初始化
 			String[] filelist = file.list();
@@ -184,9 +190,10 @@ public class GPS {
 				}
 
 				lineNumber = 7;// 重新把文件行数定位到第七行，准备下一个文件的读取
-				System.out.println(c + 1);// 打印转换完毕的文件个数
-				if (c == fileName.length - 1)
-					System.out.println(m + "节点所有数据文件转换已写入完毕");
+				System.out.print("..." + (c + 1) + "");// 打印转换完毕的文件个数
+				if (c == fileName.length - 1) {
+					System.out.println("\n共" + (c + 1) + "个文件转换完毕。");
+				}
 			}
 		}
 	}
@@ -230,12 +237,12 @@ public class GPS {
 
 			LatLonToUTMXY(inputWGS84.lat, inputWGS84.lon, zone, outputUTM);
 			try {
-				String folderPath = rootDirectory + "xyGPS\\" + latPath;
+				String folderPath = Configuration.getConfiguration().getXYDirectory() + latPath;
 				File folderFile = new File(folderPath);
 				if (!folderFile.exists() && !folderFile.isDirectory()) {
 					folderFile.mkdir();
 				}
-				String filePath = rootDirectory + "xyGPS\\" + latPath + "\\" + fileName;
+				String filePath = Configuration.getConfiguration().getXYDirectory() + latPath + "\\" + fileName;
 				File writeFile = new File(filePath);
 				BufferedWriter out = new BufferedWriter(new FileWriter(
 						writeFile, true));
